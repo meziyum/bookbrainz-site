@@ -21,8 +21,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from 'react';
 import {faCircleNotch} from '@fortawesome/free-solid-svg-icons';
 
-
-function LoadingSpinner() {
+/**
+ * A loading spinner component that displays a spinning circle to indicate
+ * that content is being loaded.
+ *
+ * @returns {JSX.Element}
+ */
+function LoadingSpinner(): JSX.Element {
 	return (
 		<div className="loading-background">
 			<FontAwesomeIcon
