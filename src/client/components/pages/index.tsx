@@ -32,14 +32,8 @@ import {faTwitter} from '@fortawesome/free-brands-svg-icons';
 
 const {Alert, Button, Col, Container, Row} = bootstrap;
 
-class IndexPage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.renderHeader = this.renderHeader.bind(this);
-		this.renderContent = this.renderContent.bind(this);
-	}
-
-	renderHeader() {
+function IndexPage(): React.JSX.Element {
+	function renderHeader() {
 		return (
 			<div>
 				<Alert className="text-center" variant="warning">
@@ -185,7 +179,7 @@ class IndexPage extends React.Component {
 		);
 	}
 
-	renderContent() {
+	function renderContent() {
 		return (
 			<Container>
 				<Row>
@@ -225,7 +219,7 @@ class IndexPage extends React.Component {
 		);
 	}
 
-	renderAboutUs() {
+	function renderAboutUs() {
 		const disableSignUp = this.props.disableSignUp ? {disabled: true} : {};
 		return (
 			<React.Fragment>
@@ -262,15 +256,13 @@ class IndexPage extends React.Component {
 		);
 	}
 
-	render() {
-		return (
-			<div>
-				{this.renderHeader()}
-				{this.renderContent()}
-			</div>
-		);
-	}
-}
+	return (
+		<div>
+			{renderHeader()}
+			{renderContent()}
+		</div>
+	);
+};
 
 IndexPage.displayName = 'IndexPage';
 IndexPage.propTypes = {
