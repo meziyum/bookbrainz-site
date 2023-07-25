@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015  Ben Ockmore
+ *               2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +29,7 @@ import {faTwitter} from '@fortawesome/free-brands-svg-icons';
  * @returns {ReactElement} a HTML document which displays the About
  * page
  */
-function AboutPage() {
+function AboutPage(): React.JSX.Element {
 	const NESLink =
 		'https://ocharles.org.uk/blog/posts/' +
 			'2012-07-10-nes-does-it-better-1.html';
