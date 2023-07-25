@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015  Ben Ockmore
+ *				 2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +24,7 @@ import React from 'react';
 
 const {Col, Row} = bootstrap;
 
-function LicensingPage() {
+function LicensingPage(): React.JSX.Element {
 	const CC0Link = 'http://creativecommons.org/publicdomain/zero/1.0/';
 	const CC0Image = 'http://i.creativecommons.org/p/zero/1.0/88x31.png';
 
