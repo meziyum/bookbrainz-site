@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015  Ben Ockmore
+ * 				 2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +24,7 @@ import React from 'react';
  * Renders the document and displays the 'Develop' page.
  * @returns {ReactElement} a HTML document to display the Develop page
  */
-function DevelopPage() {
+function DevelopPage(): React.JSX.Element {
 	return (
 		<div>
 			<div className="page-header">
