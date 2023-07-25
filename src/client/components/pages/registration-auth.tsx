@@ -2,6 +2,7 @@
  * Copyright (C) 2015  Annie Zhou
  *               2016  Sean Burke
  *               2016  Ben Ockmore
+ * 				 2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ const {Alert, Button} = bootstrap;
  * continue the BookBrainz registration process.
  * @returns {ReactElement} an element containing the rendered output.
  */
-function RegistrationAuth() {
+function RegistrationAuth(): React.JSX.Element {
 	return (
 		<div>
 			<div className="page-header"><h1>Register</h1></div>
