@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015  Ben Ockmore
+ * 				 2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@ import React from 'react';
  * @returns {ReactElement} a HTML document which displays the
  * Contribute page
  */
-function ContributePage() {
+function ContributePage(): React.JSX.Element {
 	const IRCLink = 'https://kiwiirc.com/nextclient/irc.libera.chat/?#bookbrainz';
 	const styleLink = 'https://bookbrainz-user-guide.readthedocs.io/';
 
