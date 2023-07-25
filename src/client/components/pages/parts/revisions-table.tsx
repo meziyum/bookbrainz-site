@@ -23,13 +23,21 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {faCodeBranch} from '@fortawesome/free-solid-svg-icons';
+import { _Revision } from '../../../../types';
 
 
 const {Table} = bootstrap;
 const {formatDate, stringToHTMLWithLinks} = utilsHelper;
 
-function RevisionsTable(props) {
-	const {results, showEntities, showRevisionNote, showRevisionEditor, tableHeading} = props;
+interface RevisionsTableProps{
+	results: Array<_Revision>;
+	showEntities?: boolean
+	showRevisionEditor?: boolean;
+	showRevisionNote?: boolean;
+	tableHeading: React.JSX.Element;
+};
+
+function RevisionsTable({results, showEntities, showRevisionNote, showRevisionEditor, tableHeading}: RevisionsTableProps): React.JSX.Element {
 	return (
 		<div>
 			<div>
