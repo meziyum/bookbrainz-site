@@ -35,7 +35,7 @@ interface RevisionsTableProps{
 	showEntities?: boolean
 	showRevisionEditor?: boolean;
 	showRevisionNote?: boolean;
-	tableHeading: React.JSX.Element;
+	tableHeading?: React.JSX.Element;
 };
 
 function RevisionsTable({results, showEntities, showRevisionNote, showRevisionEditor, tableHeading}: RevisionsTableProps): React.JSX.Element {
