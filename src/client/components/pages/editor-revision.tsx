@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2020 Prabal Singh
+ * 				 2023 Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,45 +22,45 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import RevisionsTable from './parts/revisions-table';
 
-
-class EditorRevisionPage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			results: this.props.results
-		};
-
-		this.searchResultsCallback = this.searchResultsCallback.bind(this);
-		this.paginationUrl = './revisions/revisions';
-	}
-
-	searchResultsCallback(newResults) {
-		this.setState({results: newResults});
-	}
-
-	render() {
-		return (
-			<div id="pageWithPagination">
-				<RevisionsTable
-					results={this.state.results}
-					showEntities={this.props.showEntities}
-					showRevisionEditor={this.props.showRevisionEditor}
-					showRevisionNote={this.props.showRevisionNote}
-					tableHeading={this.props.tableHeading}
-				/>
-				<PagerElement
-					from={this.props.from}
-					nextEnabled={this.props.nextEnabled}
-					paginationUrl={this.paginationUrl}
-					results={this.state.results}
-					searchResultsCallback={this.searchResultsCallback}
-					size={this.props.size}
-				/>
-			</div>
-		);
-	}
+interface Props {
+	from?: number;
+	nextEnabled: boolean;
+	results?: PropTypes.array,
+	showEntities?: boolean;
+	showRevisionEditor?: boolean;
+	showRevisionNote?: boolean;
+	size?: number;
+	tableHeading?: string;
 }
 
+function EditorRevisionPage({results, from, nextEnabled, showEntities, showRevisionEditor, showRevisionNote, size, tableHeading}: Props): React.JSX.Element {
+	const [resultsState, updateResultsState] = React.useState(results);
+	const paginationUrl = './revisions/revisions';
+
+	function searchResultsCallback(newResults) {
+		updateResultsState(newResults);
+	}
+
+	return (
+		<div id="pageWithPagination">
+			<RevisionsTable
+				results={resultsState}
+				showEntities={showEntities}
+				showRevisionEditor={showRevisionEditor}
+				showRevisionNote={showRevisionNote}
+				tableHeading={tableHeading}
+			/>
+			<PagerElement
+				from={from}
+				nextEnabled={nextEnabled}
+				paginationUrl={paginationUrl}
+				results={resultsState}
+				searchResultsCallback={searchResultsCallback}
+				size={size}
+			/>
+		</div>
+	);
+}
 
 EditorRevisionPage.displayName = 'EditorRevisionPage';
 EditorRevisionPage.propTypes = {
