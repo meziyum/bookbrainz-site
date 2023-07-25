@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016  Daniel Hsing
+ * 				 2023  Meziyum
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +29,15 @@ const {Button, Container, Row} = bootstrap;
  * Links to different pages
  */
 
-function ErrorPage(props) {
-	const {error} = props;
+interface ErrorPageProps{
+	error: {
+		detailedMessage?: string | Array<string>,
+		message: string;
+		status: number;
+	}
+};
+
+function ErrorPage({error}: ErrorPageProps): React.JSX.Element {
 	let {detailedMessage} = error;
 
 	if (typeof detailedMessage === 'string') {
@@ -53,7 +61,6 @@ function ErrorPage(props) {
 			<div>
 				{detailedMessage &&
 					detailedMessage.map((message, idx) => (
-						// eslint-disable-next-line react/no-array-index-key
 						<Row key={`detailedMsg${idx}`}>
 							<span>
 								{message}
@@ -78,8 +85,8 @@ ErrorPage.displayName = 'ErrorPage';
 ErrorPage.propTypes = {
 	error: PropTypes.shape({
 		detailedMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-		message: PropTypes.string,
-		status: PropTypes.number
+		message: PropTypes.string.isRequired,
+		status: PropTypes.number.isRequired
 	}).isRequired
 };
 
