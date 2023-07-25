@@ -27,15 +27,19 @@ import {genEntityIconHTMLElement} from '../../../helpers/entity';
 
 const {Button, ButtonGroup} = bootstrap;
 
+interface Props {
+	query: string | null | undefined;
+}
+
 /**
  * Renders the document and displays 'CallToAction' component.
  * @returns {ReactElement} a HTML document which displays
  * @param {object} props - Properties passed to the component.
  * the 'CallToAction' component.
  */
-function CallToAction(props) {
-	const seedingParameters = new URLSearchParams({name: props.query});
-	function renderEntityLink(type) {
+function CallToAction({query}: Props): React.JSX.Element {
+	const seedingParameters = new URLSearchParams({name: query});
+	function renderEntityLink(type: string) {
 		return (
 			<a href={`/${camelCase(type)}/create?${seedingParameters}`}>
 				<Button
