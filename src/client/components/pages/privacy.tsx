@@ -25,7 +25,7 @@ import React from 'react';
  * for BookBrainz.
  * @returns {ReactElement} an element containing the rendered output
  */
-function PrivacyPage() {
+function PrivacyPage(): React.JSX.Element {
 	return (
 		<div>
 			<div className="page-header">
