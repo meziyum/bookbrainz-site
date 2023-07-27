@@ -57,8 +57,18 @@ const maxAchievementProgress = {
 	30: 100
 };
 
-function Achievement(props) {
-	const {achievement, counter, unlocked} = props;
+interface Props {
+	achievement: {
+		id: number;
+		name: string;
+		description: string;
+		badgeUrl: string;
+	},
+	counter: number;
+	unlocked: boolean;
+};
+
+function Achievement({achievement, counter, unlocked}: Props): React.JSX.Element {
 	const {id, name, description, badgeUrl} = achievement;
 	const imgElement = unlocked ? (
 		<DragAndDropImage
