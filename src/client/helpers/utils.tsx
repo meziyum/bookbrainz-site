@@ -53,7 +53,7 @@ export function injectDefaultAliasName(instance: Record<string, any>) {
 	return instance;
 }
 
-export function formatDate(date, includeTime) {
+export function formatDate(date, includeTime=false) {
 	if (!date) {
 		return null;
 	}
