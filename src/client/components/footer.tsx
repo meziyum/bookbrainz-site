@@ -26,9 +26,12 @@ import React from 'react';
 
 const {Col, Container, Row} = bootstrap;
 
-function Footer(props) {
-	const {repositoryUrl, siteRevision} = props;
+interface Props{
+	repositoryUrl: string;
+	siteRevision: string;
+}
 
+function Footer({repositoryUrl, siteRevision}: Props): React.JSX.Element {
 	return (
 		<footer className="footer">
 			<Container fluid>
