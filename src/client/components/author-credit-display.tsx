@@ -19,10 +19,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {map as _map} from 'lodash';
+import { _Author } from '../../types';
 
+interface name {
+	author: _Author;
+	authorBBID: number;
+	name: string;
+	joinPhrase: string;
+}
 
-function AuthorCreditDisplay({names}) {
-	const nameElements = _map(names, (name) => {
+interface Props {
+	names: Array<name> | name;
+}
+
+function AuthorCreditDisplay({names}: Props): React.JSX.Element {
+	const nameElements = _map(names, (name: name) => {
 		const authorBBID = name.authorBBID ?? name.author?.id;
 		return (
 			<span key={`author-credit-${authorBBID}`}>
