@@ -20,9 +20,14 @@ import {genEntityIconHTMLElement, getEntityLabel} from '../helpers/entity';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {kebabCase as _kebabCase} from 'lodash';
+import { _Entity } from '../../types';
 
+interface Props {
+	entity: _Entity;
+	inline?: boolean;
+}
 
-function EntityLink({entity, inline}) {
+function EntityLink({entity, inline}: Props): React.JSX.Element {
 	let bbidElement = <div className="small">({entity.bbid})</div>;
 	if (inline) {
 		bbidElement = <span className="small">({entity.bbid})</span>;
