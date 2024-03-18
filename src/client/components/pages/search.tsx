@@ -21,12 +21,11 @@
 import * as React from 'react';
 import CallToAction from './parts/call-to-action';
 import PagerElement from './parts/pager';
-import PropTypes from 'prop-types';
 import SearchField from './parts/search-field';
 import SearchResults from './parts/search-results';
 
 
-type Props = {
+type SearchPageProps = {
 	entityTypes: any[],
 	from?: number,
 	initialResults?: any[],
@@ -37,72 +36,40 @@ type Props = {
 	user: Record<string, unknown>
 };
 
-type State = {
+type SearchPageState = {
 	query: string | null | undefined;
 	results: any[];
 	type: string | null | undefined;
 };
 
-class SearchPage extends React.Component<Props, State> {
-	static displayName = 'SearchPage';
+function SearchPage({entityTypes, from = 0, initialResults = [], nextEnabled, query = '', resultsPerPage = 20, type = null, user}: SearchPageProps): JSX.Element {
 
-	static propTypes = {
-		entityTypes: PropTypes.array.isRequired,
-		from: PropTypes.number,
-		initialResults: PropTypes.array,
-		nextEnabled: PropTypes.bool.isRequired,
-		query: PropTypes.string,
-		resultsPerPage: PropTypes.number,
-		type: PropTypes.string,
-		user: PropTypes.object.isRequired
-	};
-
-	static defaultProps = {
-		from: 0,
-		initialResults: [],
-		query: '',
-		resultsPerPage: 20,
-		type: null
-	};
-
-	/**
-	 * Initializes component state to default values and binds class
-	 * methods to proper context so that they can be directly invoked
-	 * without explicit binding.
-	 *
-	 * @param {object} props - Properties object passed down from parents.
-	 */
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			query: props.query,
-			results: props.initialResults,
-			type: props.type
-		};
-
-		this.paginationUrl = './search/search';
-		this.pagerElementRef = React.createRef();
-	}
-
-	paginationUrl: string;
-
-	pagerElementRef: React.RefObject<PagerElement>;
+	const [SearchPageStates, updateSearchPageState] = React.useState<SearchPageState>({
+		query: query,
+		results: initialResults,
+		type: type
+	});
+	const paginationUrl = './search/search';
+	const pagerElementRef: React.RefObject<PagerElement> = React.useRef(null);
 
 	/**
 	 * Gets user text query from the browser's URL search parameters and
 	 * sets it in the state to be passed down to SearchField and Pager components
 	 *
-	 * @param {string} query - Query string entered by user.
-	 * @param {string} type - Entity type selected from dropdown
+	 * @param {string} queryParam - Query string entered by user.
+	 * @param {string} typeParam - Entity type selected from dropdown
 	 */
-	handleSearch = (query: string, type: string) => {
-		if (query === this.state.query && type === this.state.type && this.pagerElementRef.current) {
+	const handleSearch = (queryParam: string, typeParam: string) => {
+		if (queryParam === SearchPageStates.query && typeParam === SearchPageStates.type && pagerElementRef.current) {
 			// if no change in query or type, re-run the search
-			this.pagerElementRef.current.triggerSearch();
+			pagerElementRef.current.triggerSearch();
 		}
 		else {
-			this.setState({query, type});
+			updateSearchPageState((prevState: SearchPageState)  => ({
+				...prevState,
+				query: queryParam,
+				type: typeParam,
+			}));
 		}
 	};
 
@@ -112,8 +79,11 @@ class SearchPage extends React.Component<Props, State> {
 	 *
 	 * @param {array} newResults - The array of results from the  query
 	 */
-	searchResultsCallback = (newResults: any[]) => {
-		this.setState({results: newResults});
+	const searchResultsCallback = (newResults: any[]) => {
+		updateSearchPageState((prevState: SearchPageState)  => ({
+			...prevState,
+			results: newResults
+		}));
 	};
 
 	/**
@@ -122,76 +92,69 @@ class SearchPage extends React.Component<Props, State> {
 	 *
 	 * @param {URLSearchParams} searchParams - The URL search parameters passed up from the pager component
 	 */
-	searchParamsChangeCallback = (searchParams: URLSearchParams) => {
-		let query;
-		let type;
+	const searchParamsChangeCallback = (searchParams: URLSearchParams) => {
+		let tempQuery: string | null | undefined;
+		let tempType: string | null | undefined;
 		if (searchParams.has('q')) {
-			query = searchParams.get('q');
+			tempQuery = searchParams.get('q');
 		}
 		if (searchParams.has('type')) {
-			type = searchParams.get('type');
+			tempType = searchParams.get('type');
 		}
-		if (query === this.state.query && type === this.state.type) {
+		if (tempQuery === SearchPageStates.query && tempType === SearchPageStates.type) {
 			return;
 		}
-		this.handleSearch(query, type);
+		handleSearch(tempQuery, tempType);
 	};
 
-	/**
-	 * Renders the component: Search bar with results table located vertically
-	 * below it.
-	 *
-	 * @returns {object} - JSX to render.
-	 */
-	render() {
-		const {type, query, results} = this.state;
-		const querySearchParams = `q=${query}${type ? `&type=${type}` : ''}`;
-		return (
-			<div id="pageWithPagination">
-				<SearchField
-					entityTypes={this.props.entityTypes}
-					query={query}
-					type={type}
-					onSearch={this.handleSearch}
-				/>
-				<SearchResults
-					results={this.state.results}
-					user={this.props.user}
-				/>
-				<PagerElement
-					from={this.props.from}
-					nextEnabled={this.props.nextEnabled}
-					paginationUrl={this.paginationUrl}
-					querySearchParams={querySearchParams}
-					ref={this.pagerElementRef}
-					results={results}
-					searchParamsChangeCallback={this.searchParamsChangeCallback}
-					searchResultsCallback={this.searchResultsCallback}
-					size={this.props.resultsPerPage}
-				/>
-				<div className="text-center">
-					{results.length === 0 &&
-					<div>
-						<hr className="thin"/>
-						<h2 style={{color: '#754e37'}}>
-						No results found
-						</h2>
-					</div>}
+	const querySearchParams = `q=${SearchPageStates.query}${SearchPageStates.type ? `&type=${SearchPageStates.type}` : ''}`;
 
-					<div>
-						{results.length === 0 &&
-							<small>Make sure the spelling is correct, and that
-								 you have selected the correct type in the search bar.
-							</small>}
-						<hr className="wide"/>
-						<h3>Are we missing an entry?</h3>
-						<CallToAction query={query}/>
-					</div>
+	return (
+		<div id="pageWithPagination">
+			<SearchField
+				entityTypes={entityTypes}
+				query={SearchPageStates.query}
+				type={SearchPageStates.type}
+				onSearch={handleSearch}
+			/>
+			<SearchResults
+				results={SearchPageStates.results}
+				user={user}
+			/>
+			<PagerElement
+				from={from}
+				nextEnabled={nextEnabled}
+				paginationUrl={paginationUrl}
+				querySearchParams={querySearchParams}
+				ref={pagerElementRef}
+				results={SearchPageStates.results}
+				searchParamsChangeCallback={searchParamsChangeCallback}
+				searchResultsCallback={searchResultsCallback}
+				size={resultsPerPage}
+			/>
+			<div className="text-center">
+				{SearchPageStates.results.length === 0 &&
+				<div>
+					<hr className="thin"/>
+					<h2 style={{color: '#754e37'}}>
+					No results found
+					</h2>
+				</div>}
 
+				<div>
+					{SearchPageStates.results.length === 0 &&
+						<small>Make sure the spelling is correct, and that
+								you have selected the correct type in the search bar.
+						</small>}
+					<hr className="wide"/>
+					<h3>Are we missing an entry?</h3>
+					<CallToAction query={SearchPageStates.query}/>
 				</div>
+
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
+SearchPage.displayName = 'SearchPage';
 export default SearchPage;
